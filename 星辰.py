@@ -3,7 +3,7 @@
 Liyao Zhang
 
 Start Date 1/13/2022
-End Date 1/24/2022
+End Date 1/25/2022
 
 星辰智盈自动回测系统 with Gooey V1.0
 
@@ -20,6 +20,7 @@ from gooey import Gooey, GooeyParser
 @Gooey(program_name="星辰智盈自动回测系统",
        default_size=(500, 550),
        tabbed_groups=True,
+       clear_before_run=True,
        navigation='Tabbed',
        language='Chinese'
 )

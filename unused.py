@@ -1,3 +1,4 @@
+            #判断历史样本让球方
             '''
             result0['主不败'] = result0['胜']+result0['平']
             sub1 = result0[(result0['盘口'] == '-0.25') & (result0['让胜'].between(result0['平']+result0['胜']-0.03, result0['平']+result0['胜']+0.03)) & (result0['主不败'].between(0,1,inclusive=False))]

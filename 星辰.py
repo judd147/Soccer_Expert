@@ -3,12 +3,11 @@
 Liyao Zhang
 
 Start Date 1/13/2022
-End Date 1/25/2022
+Last Edit 3/19/2022
 
 星辰智盈自动回测系统 with Gooey V1.0
 
 """
-
 import pandas as pd
 from numpy import mean
 import xlsxwriter
@@ -52,7 +51,7 @@ def read_file(data):
 
 # FIXME
 def read_fire(data):
-    df = pd.read_excel(data, sheet_name = 3)
+    df = pd.read_excel(data, sheet_name = 2)
     return df
     
 # *** 核心层函数 *** #
@@ -287,9 +286,10 @@ def search(df, args):
     worksheet.write(x, y+6, '最长遗漏')
     worksheet.write(x, y+7, '高频比分')
     worksheet.write(x, y+8, '频率')
+    worksheet.write(x, y+9, '算法数量')
     if history:
-        worksheet.write(x, y+9, '正误')
-    worksheet.write(x, y+10, '注释')
+        worksheet.write(x, y+10, '正误')
+    worksheet.write(x, y+11, '注释')
     x += 1
     
     #储存每一行信息的变量
@@ -339,7 +339,7 @@ def search(df, args):
                         item = str(item)
                         com_str += str(item + ",")
                     com_str = com_str[:-1]
-                    worksheet.write(x, y+10, com_str)
+                    worksheet.write(x, y+11, com_str)
                 #写入上盘信息
                 avg_best = mean(avg_uppr)
                 worksheet.write(x, y, liga)
@@ -354,12 +354,13 @@ def search(df, args):
                     worksheet.write(x, y+6, max(upprmiss))
                 worksheet.write(x, y+7, line)
                 worksheet.write(x, y+8, freq)
+                worksheet.write(x, y+9, str(sum(uppr_count))+'/'+str(algo))
                 if history:
                     TF = judge(new_score, num_hand, home, away, deep, 'uppr')
                     if TF:
-                        worksheet.write(x, y+9, '\u2714')
+                        worksheet.write(x, y+10, '\u2714')
                     else:
-                        worksheet.write(x, y+9, '\u2716')
+                        worksheet.write(x, y+10, '\u2716')
                 
                 if avg_best >= 60 and uppr_count[2] > 0:
                     worksheet.write(x, y+4, '新发现！！！五星级上盘模型') 
@@ -380,7 +381,7 @@ def search(df, args):
                         item = str(item)
                         com_str += str(item + ",")
                     com_str = com_str[:-1]
-                    worksheet.write(x, y+10, com_str)
+                    worksheet.write(x, y+11, com_str)
                 #写入下盘信息
                 avg_best = mean(avg_down)
                 worksheet.write(x, y, liga)
@@ -395,12 +396,13 @@ def search(df, args):
                     worksheet.write(x, y+6, max(downmiss))
                 worksheet.write(x, y+7, line)
                 worksheet.write(x, y+8, freq)
+                worksheet.write(x, y+9, str(sum(down_count))+'/'+str(algo))
                 if history:
                     TF = judge(new_score, num_hand, home, away, deep, 'down')
                     if TF:
-                        worksheet.write(x, y+9, '\u2714')
+                        worksheet.write(x, y+10, '\u2714')
                     else:
-                        worksheet.write(x, y+9, '\u2716')
+                        worksheet.write(x, y+10, '\u2716')
                     
                 if avg_best >= 60 and down_count[2] > 0:
                     worksheet.write(x, y+4, '新发现！！！五星级下盘模型')                    
@@ -538,9 +540,9 @@ def search(df, args):
         if roll:
             roll = False
             if home:
-                result1 = result0[result0['盘口'].str.contains('\-')]
+                result1 = result0[result0['盘口'].str.contains('\-', na=True)]
             elif away:
-                result1 = result0[result0['盘口'].str.contains('\+')]
+                result1 = result0[result0['盘口'].str.contains('\+', na=True)]
             total = len(result1)
             if total > 0:
                 print("按让球方匹配历史比赛",total,"场")
@@ -664,7 +666,7 @@ def search(df, args):
                         item = str(item)
                         com_str += str(item + ",")
                     com_str = com_str[:-1]
-                    worksheet.write(x, y+10, com_str)
+                    worksheet.write(x, y+11, com_str)
                 #写入上盘信息
                 avg_best = mean(avg_uppr)
                 worksheet.write(x, y, liga)
@@ -679,12 +681,13 @@ def search(df, args):
                     worksheet.write(x, y+6, max(upprmiss))
                 worksheet.write(x, y+7, line)
                 worksheet.write(x, y+8, freq)
+                worksheet.write(x, y+9, str(sum(uppr_count))+'/'+str(algo))
                 if history:
                     TF = judge(new_score, num_hand, home, away, deep, 'uppr')
                     if TF:
-                        worksheet.write(x, y+9, '\u2714')
+                        worksheet.write(x, y+10, '\u2714')
                     else:
-                        worksheet.write(x, y+9, '\u2716')
+                        worksheet.write(x, y+10, '\u2716')
                 
                 if avg_best >= 60 and uppr_count[2] > 0:
                     worksheet.write(x, y+4, '新发现！！！五星级上盘模型') 
@@ -705,7 +708,7 @@ def search(df, args):
                         item = str(item)
                         com_str += str(item + ",")
                     com_str = com_str[:-1]
-                    worksheet.write(x, y+10, com_str)
+                    worksheet.write(x, y+11, com_str)
                 #写入下盘信息
                 avg_best = mean(avg_down)
                 worksheet.write(x, y, liga)
@@ -720,12 +723,13 @@ def search(df, args):
                     worksheet.write(x, y+6, max(downmiss))
                 worksheet.write(x, y+7, line)
                 worksheet.write(x, y+8, freq)
+                worksheet.write(x, y+9, str(sum(down_count))+'/'+str(algo))
                 if history:
                     TF = judge(new_score, num_hand, home, away, deep, 'down')
                     if TF:
-                        worksheet.write(x, y+9, '\u2714')
+                        worksheet.write(x, y+10, '\u2714')
                     else:
-                        worksheet.write(x, y+9, '\u2716')
+                        worksheet.write(x, y+10, '\u2716')
                     
                 if avg_best >= 60 and down_count[2] > 0:
                     worksheet.write(x, y+4, '新发现！！！五星级下盘模型')                    
